@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Visually On Top - Example</title>
+    <script src="js/jquery-2.2.1.js"></script>
+    <script src="js/modernizr-3.3.1.js"></script>
+    <style>
+        html,
+        body {
+            min-height: 100%;
+        }
+        
+        body {
+            /* display:flex; */
+        }
+        
+        .context {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+        }
+        
+        #Red {
+            background: red;
+            z-index: 2;
+        }
+        
+        #Green {
+            left: 80px;
+            top: 80px;
+            background: green;
+            z-index: 1;
+        }
+        
+        .context div {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+        }
+        
+        #Red div {
+            bottom: 5px;
+            right: 5px;
+            background: blue;
+            z-index: 10;
+        }
+        
+        #Green div {
+            top: 5px;
+            left: 5px;
+            background: yellow;
+            z-index: 20;
+        }
+        
+        #Lightgrey {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 0;
+            left: 75px;
+            background: lightgray;
+            /* opacity:0.5; */
+            /* transform: scale(1,1); */
+            /* mix-blend-mode: luminosity; */
+            /* -webkit-filter: grayscale(50%); */
+            /* perspective: 500px; */
+            /* isolation:isolate; */
+            /* position: fixed; */
+            /* clip: rect(10px, 20px, 30px, 40px); */
+            /* -webkit-clip-path: url(""); */
+            /* clip-path: url(""); */
+            /* -webkit-mask-image:url(""); */
+            /* mask:url(""); */
+            /* transform-style:preserve-3d; */
+            /* will-change:display,opacity,transform; */
+        }
+        
+        #Lightgrey div {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 20px;
+            left: 20px;
+            background: cyan;
+            /* z-index:100; */
+        }
+        
+        #Darkgrey {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 40px;
+            left: 85px;
+            background: gray;
+        }
+        
+        #result {
+            position: absolute;
+            left: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="testElement context" id="Green">
+        <div class="testElement" id="Yellow"></div>
+    </div>
+    <div class="testElement context" id="Red">
+        <div class="testElement" id="Blue"></div>
+    </div>
+    <div class="testElement" id="Lightgrey">
+        <div class="testElement" id="Lightblue"></div>
+    </div>
+    <div class="testElement" id="Darkgrey"></div>
+
+    <p id="result"></p>
+</body>
+<script src="src/visually-on-top.js"></script>
+<script>
+    var result = [];
+
+    // Selected elements are in DOM order
+    // Take advantage of this, as 'usually' most elements are also stacked in DOM order
+    // If the stacking of the selected elements doesn't deviate much from the DOM order,
+    // then this approach is fast because it will not need to compare all elements with all other elements to determine the stacking order
+    $('.testElement').each(function(index) {
+        var nrOfResults = result.length,
+            i = nrOfResults;
+
+        // Search for the correct index on which to insert this node
+        while (i--) {
+            var front = $.fn.visuallyInFront(this, result[i]);
+            if (front === this) {
+                // The current node is on top of the node we're comparing to
+                // No need to check lower nodes, because this node is on top of them
+                // as well
+                break;
+            }
+        }
+
+        // Insert after the element we just checked against
+        i++;
+
+        if (i == nrOfResults) {
+            // Add to end of results array
+            result[nrOfResults] = this;
+        } else {
+            // Insert at index
+            result.splice(i, 0, this);
+        }
+    });
+
+    // console.log(result);
+
+    var output = '';
+    result.forEach(function(node, index) {
+        output += node.id;
+        if (index < (result.length - 1)) {
+            output += " > ";
+        }
+    });
+
+    $('#result').text(output);
+</script>
+
+</html>
