@@ -45,3 +45,8 @@ References
 - [Stacking context example 3](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_context_example_3)
 - [Visual formatting model](https://www.w3.org/TR/CSS2/visuren.html#propdef-z-index)
 - [Using Flexbox: Mixing Old and New for the Best Browser Support](https://css-tricks.com/using-flexbox/)
+
+Similar projects
+------
+- [zIndexTree](https://github.com/rjhallsted/zIndexTree)
+- [zVisualizer](https://github.com/BGCX262/zvisualizer-svn-to-git)
