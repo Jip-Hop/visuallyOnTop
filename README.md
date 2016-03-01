@@ -28,8 +28,8 @@ Dependencies
 
 Credits
 ------
-Visually On Top by Jip de Beer\
-Initial approach from 2013:\
+Visually On Top by Jip de Beer  
+Initial approach from 2013:  
 Marcelo Gibson and bfavaretto
 
 References
